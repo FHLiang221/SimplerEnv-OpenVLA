@@ -16,9 +16,9 @@ git clone https://github.com/FHLiang221/SimplerEnv-OpenVLA.git
 ```
 
 Clone ManiSkill2:
-'''
+```
 cd SimplerEnv && git clone https://github.com/allenzren/ManiSkill2_real2sim.git
-'''
+```
 
 Install numpy<2.0 (otherwise errors in IK might occur in pinocchio):
 ```
