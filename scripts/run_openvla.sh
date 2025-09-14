@@ -1,18 +1,18 @@
 model_name=openvla
 tasks=(
-  bridge.sh
-  drawer_variant_agg.sh
-  drawer_visual_matching.sh
-  move_near_variant_agg.sh
-  move_near_visual_matching.sh
+  #bridge.sh
+  #drawer_variant_agg.sh
+  #drawer_visual_matching.sh
+  #move_near_variant_agg.sh
+  #move_near_visual_matching.sh
   pick_coke_can_variant_agg.sh
   pick_coke_can_visual_matching.sh
-  put_in_drawer_variant_agg.sh
-  put_in_drawer_visual_matching.sh
+  #put_in_drawer_variant_agg.sh
+  #put_in_drawer_visual_matching.sh
 )
 
 ckpts=(
-  ~/projects/vla_ptm/pretrained/openvla-7b
+  /project/fhliang/checkpoints/GOOGLE_5K_NP
 )
 
 action_ensemble_temp=-0.8

@@ -39,11 +39,12 @@ class OpenVLAInference:
         self.processor = AutoProcessor.from_pretrained(saved_model_path, trust_remote_code=True)
         self.vla = AutoModelForVision2Seq.from_pretrained(
             saved_model_path,
+            torch_dtype=torch.bfloat16,  # Specify dtype before flash attention
             attn_implementation="flash_attention_2",  # [Optional] Requires `flash_attn`
-            torch_dtype=torch.bfloat16,
             low_cpu_mem_usage=True,
             trust_remote_code=True,
-        ).cuda()
+            device_map="cuda",  # Load directly on GPU for Flash Attention 2.0
+        )
 
         self.image_size = image_size
         self.action_scale = action_scale
