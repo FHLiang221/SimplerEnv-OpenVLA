@@ -67,7 +67,18 @@ pip install git+https://github.com/nathanrooy/simulated-annealing
 pip install torch==2.2.0 torchvision==0.17.0 torchaudio==2.2.0
 pip install transformers==4.40.1 tokenizers==0.19.1 accelerate==0.32.1
 pip install flash-attn==2.6.1 --no-build-isolation
-pip install "timm>=0.9.10,<1.0.0
+pip install "timm>=0.9.10,<1.0.0"
+pip install json_numpy
+pip install draccus
+pip install tensorflow_graphics
+pip install jsonlines
+pip install diffusers
 
 # install what pip wants/needs
+```
+
+### OpenVLA Inference Running
+
+```
+bash scripts/run_openvla.sh #to change prompts and number of runs edit run_openvla_jaco.sh
 ```
