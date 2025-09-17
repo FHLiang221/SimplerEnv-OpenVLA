@@ -22,7 +22,6 @@ import simpler_env
 from simpler_env.utils.env.observation_utils import (
     get_image_from_maniskill2_obs_dict,
 )
-from mani_skill2_real2sim.utils.sapien_utils import vectorize_pose
 from sapien.core import Pose
 
 # ── Jaco Arm Constants ──────────────────────────────────────────────────────
@@ -202,21 +201,20 @@ def get_jaco_proprioception(env, obs) -> np.ndarray:
     Extract Jaco arm proprioceptive state compatible with OpenVLA-OFT.
     Returns 8D vector: [EEF pose (7D: x,y,z,qx,qy,qz,qw), gripper (1D)]
     Same format as LIBERO for compatibility.
+
+    Uses the readily available obs['agent']['eef_pos'] instead of manual computation.
     """
-    # Get end-effector pose relative to robot base (more stable for mobile robots)
-    eef_pose_world = env.tcp.pose
-    eef_pose_relative = env.agent.robot.pose.inv() * eef_pose_world
-    eef_pose_vec = vectorize_pose(eef_pose_relative)  # [x,y,z,qx,qy,qz,qw]
-    
-    # Get gripper state from proprioception
-    agent_proprio = obs["agent"]
-    qpos = agent_proprio["qpos"]
-    # For Jaco, gripper joints are typically the last joints
-    # We'll use the first gripper joint as the gripper openness indicator
-    gripper_state = float(qpos[-1]) if len(qpos) > 7 else 0.0
-    
+    # Get end-effector pose and gripper from observation (already computed)
+    eef_pos = obs["agent"]["eef_pos"]  # [x, y, z, qw, qx, qy, qz, gripper_width]
+
+    # Reorder quaternion from [qw, qx, qy, qz] to [qx, qy, qz, qw] for LIBERO compatibility
+    pos = eef_pos[:3]  # [x, y, z]
+    quat_wxyz = eef_pos[3:7]  # [qw, qx, qy, qz]
+    quat_xyzw = np.array([quat_wxyz[1], quat_wxyz[2], quat_wxyz[3], quat_wxyz[0]])  # [qx, qy, qz, qw]
+    gripper_state = eef_pos[7]  # normalized gripper width
+
     # Build 8D state vector: EEF pose (7D) + gripper (1D)
-    return np.concatenate([eef_pose_vec, [gripper_state]], axis=0).astype(np.float32)
+    return np.concatenate([pos, quat_xyzw, [gripper_state]], axis=0).astype(np.float32)
 
 # ── Episode Data Collection and Storage ─────────────────────────────────
 def collect_episode_data(env, env_name: str, episode_id: int, ignore_quit_for: int, base_dir=None):

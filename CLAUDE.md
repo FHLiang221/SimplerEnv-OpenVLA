@@ -47,6 +47,25 @@ wall2.set_pose(sapien.Pose([0, 0.76, 0], [0, 0, 0, 1]))
 
 **Result**: `google_robot_pick_object` task now displays black table and gray walls correctly ✅
 
+### Code Optimization & Simplification - COMPLETED ✅
+**Optimization**: Simplified `get_jaco_proprioception()` function in EE.py to use readily available observation data instead of manual computation.
+
+**Problem**: The function was manually computing end-effector pose and gripper state that was already available in `obs['agent']['eef_pos']`.
+
+**Solution**: Replaced manual computation with direct usage of observation data:
+- **Before**: Manual pose computation using `env.tcp.pose`, `vectorize_pose()`, and `qpos[-1]`
+- **After**: Direct usage of `obs['agent']['eef_pos']` with quaternion reordering for LIBERO compatibility
+- **Benefits**: Simpler code, more reliable, consistent with evaluation pipeline, reduced complexity
+
+**Files Modified**:
+- `/project/fhliang/SimplerEnv/demo_collection/EE.py:200-218` - Simplified proprioception function
+- `/project/fhliang/SimplerEnv/demo_collection/tests/test.py:168-188` - Updated test version
+- Removed unused `vectorize_pose` imports
+
+**Format Handling**: Correctly handles quaternion format conversion from `[qw, qx, qy, qz]` (observation) to `[qx, qy, qz, qw]` (LIBERO format)
+
+**Result**: Cleaner, more maintainable code that uses the existing observation pipeline ✅
+
 ## 📋 TODO Tasks
 
 ### Environment Fixes for Demo Collection
