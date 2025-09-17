@@ -22,11 +22,11 @@ for coke_can_option in "${coke_can_options_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
-  --robot google_robot_static \
+  --robot jaco \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
-  --robot-init-x 0.35 0.35 1 --robot-init-y 0.20 0.20 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
-  --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
+  --robot-init-x -0.45 -0.45 1 --robot-init-y 0.60 0.60 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
+  --robot-init-rot-quat-center 1 0 0 0 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
   --additional-env-build-kwargs ${coke_can_option};
 
 done
@@ -50,11 +50,11 @@ do for scene_name in "${scene_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
-  --robot google_robot_static \
+  --robot jaco \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
-  --robot-init-x 0.35 0.35 1 --robot-init-y 0.20 0.20 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
-  --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
+  --robot-init-x -0.45 -0.45 1 --robot-init-y 0.60 0.60 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
+  --robot-init-rot-quat-center 1 0 0 0 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
   --additional-env-build-kwargs ${coke_can_option};
 
 done
@@ -76,19 +76,19 @@ for coke_can_option in "${coke_can_options_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
-  --robot google_robot_static \
+  --robot jaco \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
-  --robot-init-x 0.35 0.35 1 --robot-init-y 0.20 0.20 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
-  --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
+  --robot-init-x -0.45 -0.45 1 --robot-init-y 0.60 0.60 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
+  --robot-init-rot-quat-center 1 0 0 0 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
   --additional-env-build-kwargs ${coke_can_option};
 
 CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
-  --robot google_robot_static \
+  --robot jaco \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
-  --robot-init-x 0.35 0.35 1 --robot-init-y 0.20 0.20 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
-  --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
+  --robot-init-x -0.45 -0.45 1 --robot-init-y 0.60 0.60 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
+  --robot-init-rot-quat-center 1 0 0 0 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
   --additional-env-build-kwargs ${coke_can_option} distractor_config=more;
 
 done
@@ -111,11 +111,11 @@ do for scene_name in "${scene_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
-  --robot google_robot_static \
+  --robot jaco \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
-  --robot-init-x 0.35 0.35 1 --robot-init-y 0.20 0.20 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
-  --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
+  --robot-init-x -0.45 -0.45 1 --robot-init-y 0.60 0.60 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
+  --robot-init-rot-quat-center 1 0 0 0 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
   --additional-env-build-kwargs ${coke_can_option};
 
 done
@@ -136,19 +136,19 @@ for coke_can_option in "${coke_can_options_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
-  --robot google_robot_static \
+  --robot jaco \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
-  --robot-init-x 0.35 0.35 1 --robot-init-y 0.20 0.20 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
-  --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
+  --robot-init-x -0.45 -0.45 1 --robot-init-y 0.60 0.60 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
+  --robot-init-rot-quat-center 1 0 0 0 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
   --additional-env-build-kwargs ${coke_can_option} slightly_darker_lighting=True;
 
 CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
-  --robot google_robot_static \
+  --robot jaco \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
-  --robot-init-x 0.35 0.35 1 --robot-init-y 0.20 0.20 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
-  --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
+  --robot-init-x -0.45 -0.45 1 --robot-init-y 0.60 0.60 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
+  --robot-init-rot-quat-center 1 0 0 0 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
   --additional-env-build-kwargs ${coke_can_option} slightly_brighter_lighting=True;
 
 done
@@ -171,11 +171,11 @@ do for env_name in "${env_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
-  --robot google_robot_static \
+  --robot jaco \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
-  --robot-init-x 0.35 0.35 1 --robot-init-y 0.20 0.20 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
-  --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
+  --robot-init-x -0.45 -0.45 1 --robot-init-y 0.60 0.60 1 --obj-init-x -0.35 -0.12 5 --obj-init-y -0.02 0.42 5 \
+  --robot-init-rot-quat-center 1 0 0 0 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1 \
   --additional-env-build-kwargs ${coke_can_option};
 
 done

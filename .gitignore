@@ -26,34 +26,4 @@ dist/
 # VSCode editor settings
 .vscode
 
-# Videos and evaluation results
-*.mp4
-*.avi
-*.mov
-*.mkv
-
-# Images
-*.png
-*.jpg
-*.jpeg
-*.gif
-*.bmp
-*.tiff
-
 imgui.ini
-
-<<<<<<< HEAD
-# Zip files
-*.zip
-
-# collected data
-/collected_data/
-/demo_collection/collected_data/
-/demo_collection/jaco_data/
-/demo_collection/jaco_data_finished/
-/demo_collection/jaco_push_coke/
-/demo_collection/jaco_data_500/
-/demo_collection/jaco_data_fixed_20/
-=======
-results/
->>>>>>> 28a849ea285801567ef9133c05e414c37ca63e7d
