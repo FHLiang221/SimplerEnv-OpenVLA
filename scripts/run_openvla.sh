@@ -13,7 +13,7 @@ tasks=(
   run_openvla_jaco.sh
 )
 ckpts=(
-  fhliang/jaco_adv_500
+  fhliang/base_jaco_20_10k
 )
 action_ensemble_temp=-0.8
 for ckpt_path in ${ckpts[@]}; do
