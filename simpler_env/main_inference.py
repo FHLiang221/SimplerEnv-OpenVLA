@@ -114,6 +114,7 @@ if __name__ == "__main__":
     with open('success.txt', "a") as f:
         logtext = f"""
 {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}: 
+    Checkpoint: {args.ckpt_path}
     Environment: {args.env_name}
     Instruction: {args.instruction if 'instruction' in args else 'default'}
     Success rate: {np.mean(success_arr)}

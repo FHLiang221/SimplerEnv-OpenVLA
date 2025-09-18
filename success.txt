@@ -1,0 +1,78 @@
+
+2025-09-16 23:32:45: 
+    Checkpoint: fhliang/base_jaco_20_3k
+    Environment: GraspSingleAppleInScene-v0
+    Instruction: pick apple
+    Success rate: 0.1
+
+2025-09-16 23:35:23: 
+    Checkpoint: fhliang/base_jaco_20_3k
+    Environment: GraspSingleAppleInScene-v0
+    Instruction: locate the apple among any objects on the table, then extend your grip and lift it up
+    Success rate: 0.3
+
+2025-09-16 23:38:03: 
+    Checkpoint: fhliang/base_jaco_20_3k
+    Environment: GraspSingleAppleInScene-v0
+    Instruction: target the red apple on the table, align your hand, and raise it slowly from the surface
+    Success rate: 0.3
+
+2025-09-16 23:47:56: 
+    Checkpoint: fhliang/base_jaco_20_3k
+    Environment: OpenTopDrawerCustomInScene-v0
+    Instruction: open top drawer
+    Success rate: 1.0
+
+2025-09-16 23:57:38: 
+    Checkpoint: fhliang/base_jaco_20_3k
+    Environment: OpenTopDrawerCustomInScene-v0
+    Instruction: pop open the topmost drawer
+    Success rate: 0.0
+
+2025-09-17 00:07:33: 
+    Checkpoint: fhliang/base_jaco_20_3k
+    Environment: OpenTopDrawerCustomInScene-v0
+    Instruction: draw open the top drawer, if you would
+    Success rate: 1.0
+
+2025-09-17 14:54:25: 
+    Checkpoint: fhliang/adv_jaco_20_3k
+    Environment: GraspSingleAppleInScene-v0
+    Instruction: pick apple
+    Success rate: 0.1
+
+2025-09-17 14:56:48: 
+    Checkpoint: fhliang/adv_jaco_20_3k
+    Environment: GraspSingleAppleInScene-v0
+    Instruction: locate the apple among any objects on the table, then extend your grip and lift it up
+    Success rate: 0.2
+
+2025-09-17 14:59:13: 
+    Checkpoint: fhliang/adv_jaco_20_3k
+    Environment: GraspSingleAppleInScene-v0
+    Instruction: target the red apple on the table, align your hand, and raise it slowly from the surface
+    Success rate: 0.1
+
+2025-09-17 15:09:15: 
+    Checkpoint: fhliang/adv_jaco_20_3k
+    Environment: OpenTopDrawerCustomInScene-v0
+    Instruction: open top drawer
+    Success rate: 0.0
+
+2025-09-17 15:19:24: 
+    Checkpoint: fhliang/adv_jaco_20_3k
+    Environment: OpenTopDrawerCustomInScene-v0
+    Instruction: pop open the topmost drawer
+    Success rate: 0.0
+
+2025-09-17 15:29:28: 
+    Checkpoint: fhliang/adv_jaco_20_3k
+    Environment: OpenTopDrawerCustomInScene-v0
+    Instruction: draw open the top drawer, if you would
+    Success rate: 0.0
+
+2025-09-18 13:46:33: 
+    Checkpoint: fhliang/adv_jaco_20_3k
+    Environment: GraspSingleAppleInScene-v0
+    Instruction: pick apple
+    Success rate: 0.1

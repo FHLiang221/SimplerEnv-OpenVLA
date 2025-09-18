@@ -171,7 +171,7 @@ def run_maniskill2_eval_single_episode(
     else:
         rgb_overlay_path_str = "None"
     r, p, y = quat2euler(robot_init_quat)
-    video_path = f"{scene_name}/{control_mode}/{env_save_name}/rob_{robot_init_x}_{robot_init_y}_rot_{r:.3f}_{p:.3f}_{y:.3f}_rgb_overlay_{rgb_overlay_path_str}/{video_name}"
+    video_path = f"{env_save_name}/{instruction.lower().replace(' ', '_')}/rob_{robot_init_x}_{robot_init_y}_rot_{r:.3f}_{p:.3f}_{y:.3f}_rgb_overlay_{rgb_overlay_path_str}/{video_name}"
     video_path = os.path.join(logging_dir, video_path)
     write_video(video_path, images, fps=5)
 

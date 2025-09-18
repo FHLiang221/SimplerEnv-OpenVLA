@@ -383,7 +383,9 @@ class OpenVLAInference:
             #     obs["extra"]["tcp_pose"].ravel(),
             #     obs["agent"]["controller"]["gripper"]["target_qpos"][:1]
             # ], axis=0)
-            proprio = obs['agent']['qpos'].copy()
+            # FIXME
+            proprio = np.concatenate([obs['agent']['eef_pos'][:-1], [obs['agent']['qpos'][-1]]])
+            # proprio = obs['agent']['qpos'].copy()
 
             proprio_norm_stats = self.norm_stats[self.unnorm_key]["proprio"]
             
@@ -444,7 +446,7 @@ class OpenVLAInference:
         action_rotation_axangle = action_rotation_ax * action_rotation_angle
         action["rot_axangle"] = action_rotation_axangle * self.action_scale
 
-        if self.policy_setup in ["google_robot", "jaco"]:
+        if self.policy_setup == "google_robot":
             current_gripper_action = raw_action["open_gripper"]
             if self.previous_gripper_action is None:
                 relative_gripper_action = np.array([0])
@@ -469,6 +471,10 @@ class OpenVLAInference:
 
         elif self.policy_setup == "widowx_bridge":
             action["gripper"] = 2.0 * (raw_action["open_gripper"] > 0.5) - 1.0
+        
+        elif self.policy_setup == "jaco":
+            # action["gripper"] = 2.0 * raw_action["open_gripper"] + 1
+            action["gripper"] = raw_action["open_gripper"]
 
         action["terminate_episode"] = np.array([0.0])
 
