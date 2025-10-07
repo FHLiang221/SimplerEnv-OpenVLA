@@ -12,6 +12,7 @@ robot_init_x=0.147
 robot_init_y=0.028
 
 CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot ${robot} --policy-setup widowx_bridge \
   --control-freq 5 --sim-freq 500 --max-episode-steps 60 \
   --env-name PutCarrotOnPlateInScene-v0 --scene-name ${scene_name} \
@@ -20,6 +21,7 @@ CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-mod
   --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1;
 
 CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot ${robot} --policy-setup widowx_bridge \
   --control-freq 5 --sim-freq 500 --max-episode-steps 60 \
   --env-name StackGreenCubeOnYellowCubeBakedTexInScene-v0 --scene-name ${scene_name} \
@@ -28,6 +30,7 @@ CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-mod
   --robot-init-rot-quat-center 0 0 0 1 --robot-init-rot-rpy-range 0 0 1 0 0 1 0 0 1;
 
 CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot ${robot} --policy-setup widowx_bridge \
   --control-freq 5 --sim-freq 500 --max-episode-steps 60 \
   --env-name PutSpoonOnTableClothInScene-v0 --scene-name ${scene_name} \
@@ -43,6 +46,7 @@ robot_init_x=0.127
 robot_init_y=0.06
 
 CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot ${robot} --policy-setup widowx_bridge \
   --control-freq 5 --sim-freq 500 --max-episode-steps 120 \
   --env-name PutEggplantInBasketScene-v0 --scene-name ${scene_name} \

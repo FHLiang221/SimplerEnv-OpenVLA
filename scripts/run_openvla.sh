@@ -1,6 +1,6 @@
 model_name=openvla
 tasks=(
-  bridge.sh
+  # bridge.sh  # WidowX robot task - skip for Google robot checkpoint
   drawer_variant_agg.sh
   drawer_visual_matching.sh
   move_near_variant_agg.sh
@@ -12,7 +12,7 @@ tasks=(
 )
 
 ckpts=(
-  ~/projects/vla_ptm/pretrained/openvla-7b
+  fhliang/google_robot_base_20k
 )
 
 action_ensemble_temp=-0.8

@@ -1,29 +1,26 @@
-# compilation and distribution
-__pycache__
-_ext
-*.pyc
+# Evaluation results
+results/
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
 *.so
-build/
-dist/
-*.egg-info/
+.Python
 
-# ipython/jupyter notebooks
-# *.ipynb
-**/.ipynb_checkpoints/
+# Virtual environments
+venv/
+env/
+ENV/
 
-# Editor temporaries
-*.swn
-*.swo
+# HuggingFace cache
+.cache/
+
+# Jupyter
+*.ipynb_checkpoints
+
+# IDE
+.vscode/
+.idea/
 *.swp
-*~
-
-# MacOS
-*.DS_Store
-
-# Pycharm editor settings
-.idea
-
-# VSCode editor settings
-.vscode
-
-imgui.ini
+*.swo

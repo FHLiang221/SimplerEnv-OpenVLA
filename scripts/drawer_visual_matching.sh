@@ -27,6 +27,7 @@ for urdf_version in "${urdf_version_arr[@]}"; do
     # A0
     echo ${ckpt_path} ${env_name} ${urdf_version}
     CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
       --robot google_robot_static \
       --control-freq 3 --sim-freq 513 --max-episode-steps 113 \
       --env-name ${env_name} --scene-name dummy_drawer \
@@ -38,6 +39,7 @@ for urdf_version in "${urdf_version_arr[@]}"; do
 
     # A1
     CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
       --robot google_robot_static \
       --control-freq 3 --sim-freq 513 --max-episode-steps 113 \
       --env-name ${env_name} --scene-name dummy_drawer \
@@ -49,6 +51,7 @@ for urdf_version in "${urdf_version_arr[@]}"; do
 
     # A2
     CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
       --robot google_robot_static \
       --control-freq 3 --sim-freq 513 --max-episode-steps 113 \
       --env-name ${env_name} --scene-name dummy_drawer \
@@ -60,6 +63,7 @@ for urdf_version in "${urdf_version_arr[@]}"; do
 
     # B0
     CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
       --robot google_robot_static \
       --control-freq 3 --sim-freq 513 --max-episode-steps 113 \
       --env-name ${env_name} --scene-name dummy_drawer \
@@ -71,6 +75,7 @@ for urdf_version in "${urdf_version_arr[@]}"; do
 
     # B1
     CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
       --robot google_robot_static \
       --control-freq 3 --sim-freq 513 --max-episode-steps 113 \
       --env-name ${env_name} --scene-name dummy_drawer \
@@ -82,6 +87,7 @@ for urdf_version in "${urdf_version_arr[@]}"; do
 
     # B2
     CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
       --robot google_robot_static \
       --control-freq 3 --sim-freq 513 --max-episode-steps 113 \
       --env-name ${env_name} --scene-name dummy_drawer \
@@ -93,6 +99,7 @@ for urdf_version in "${urdf_version_arr[@]}"; do
 
     # C0
     CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
       --robot google_robot_static \
       --control-freq 3 --sim-freq 513 --max-episode-steps 113 \
       --env-name ${env_name} --scene-name dummy_drawer \
@@ -104,6 +111,7 @@ for urdf_version in "${urdf_version_arr[@]}"; do
 
     # C1
     CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
       --robot google_robot_static \
       --control-freq 3 --sim-freq 513 --max-episode-steps 113 \
       --env-name ${env_name} --scene-name dummy_drawer \
@@ -115,6 +123,7 @@ for urdf_version in "${urdf_version_arr[@]}"; do
 
     # C2
     CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
       --robot google_robot_static \
       --control-freq 3 --sim-freq 513 --max-episode-steps 113 \
       --env-name ${env_name} --scene-name dummy_drawer \

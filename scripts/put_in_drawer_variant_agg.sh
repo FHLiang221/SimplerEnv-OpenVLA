@@ -21,6 +21,7 @@ EvalSim() {
   echo ${ckpt_path} ${env_name}
 
   CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
     --robot google_robot_static \
     --control-freq 3 --sim-freq 513 --max-episode-steps 200 \
     --env-name ${env_name} --scene-name ${scene_name} \

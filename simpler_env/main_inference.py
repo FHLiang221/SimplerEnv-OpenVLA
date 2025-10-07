@@ -59,6 +59,7 @@ if __name__ == "__main__":
             saved_model_path=args.ckpt_path,
             policy_setup=args.policy_setup,
             action_scale=args.action_scale,
+            use_proprio=args.use_proprio,
         )
     elif args.policy_model == "cogact":
         from simpler_env.policies.sim_cogact import CogACTInference

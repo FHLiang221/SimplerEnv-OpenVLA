@@ -27,6 +27,7 @@ def get_args():
         help="Policy model setup; e.g., 'google_robot', 'widowx_bridge'",
     )
     parser.add_argument("--ckpt-path", type=str, default=None)
+    parser.add_argument("--use-proprio", action="store_true", help="Enable proprioception input for policy")
     parser.add_argument("--env-name", type=str, required=True)
     parser.add_argument(
         "--additional-env-save-tags",

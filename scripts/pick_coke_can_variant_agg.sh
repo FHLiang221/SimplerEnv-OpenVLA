@@ -22,6 +22,7 @@ for coke_can_option in "${coke_can_options_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot google_robot_static \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
@@ -50,6 +51,7 @@ do for scene_name in "${scene_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot google_robot_static \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
@@ -76,6 +78,7 @@ for coke_can_option in "${coke_can_options_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot google_robot_static \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
@@ -84,6 +87,7 @@ do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-
   --additional-env-build-kwargs ${coke_can_option};
 
 CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot google_robot_static \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
@@ -111,6 +115,7 @@ do for scene_name in "${scene_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot google_robot_static \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
@@ -136,6 +141,7 @@ for coke_can_option in "${coke_can_options_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot google_robot_static \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
@@ -144,6 +150,7 @@ do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-
   --additional-env-build-kwargs ${coke_can_option} slightly_darker_lighting=True;
 
 CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot google_robot_static \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
@@ -171,6 +178,7 @@ do for env_name in "${env_arr[@]}";
 do for ckpt_path in "${arr[@]}";
 
 do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py --policy-model ${policy_model} --ckpt-path ${ckpt_path} --action-ensemble-temp ${action_ensemble_temp} --logging-dir ${logging_dir} \
+  --use-proprio \
   --robot google_robot_static \
   --control-freq 3 --sim-freq 513 --max-episode-steps 80 \
   --env-name ${env_name} --scene-name ${scene_name} \
