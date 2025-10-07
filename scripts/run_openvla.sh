@@ -1,6 +1,7 @@
 model_name=openvla
 tasks=(
   # bridge.sh  # WidowX robot task - skip for Google robot checkpoint
+  '''
   drawer_variant_agg.sh
   drawer_visual_matching.sh
   move_near_variant_agg.sh
@@ -9,6 +10,13 @@ tasks=(
   pick_coke_can_visual_matching.sh
   put_in_drawer_variant_agg.sh
   put_in_drawer_visual_matching.sh
+  '''
+  # Multi-object tasks with distractors (individual scripts for proper metrics)
+  multi_object_pick_coke.sh
+  multi_object_pick_apple.sh
+  multi_object_pick_sponge.sh
+  multi_object_open_top_drawer.sh
+  multi_object_close_bottom_drawer.sh
 )
 
 ckpts=(

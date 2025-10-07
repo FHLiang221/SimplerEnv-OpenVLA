@@ -23,6 +23,12 @@ ENVIRONMENTS = [
     "google_robot_place_in_closed_middle_drawer",
     "google_robot_place_in_closed_bottom_drawer",
     "google_robot_place_apple_in_closed_top_drawer",
+    # Multi-object scene environments
+    "google_robot_pick_coke_can_multi_object",
+    "google_robot_pick_apple_multi_object",
+    "google_robot_pick_sponge_multi_object",
+    "google_robot_open_top_drawer_multi_object",
+    "google_robot_close_bottom_drawer_multi_object",
     "widowx_spoon_on_towel",
     "widowx_carrot_on_plate",
     "widowx_stack_cube",
@@ -63,6 +69,12 @@ ENVIRONMENT_MAP = {
         "PlaceIntoClosedTopDrawerCustomInScene-v0", 
         {"model_ids": "baked_apple_v2"}
     ),
+    # Multi-object scene environments
+    "google_robot_pick_coke_can_multi_object": ("MultiObjectGraspSingleOpenedCokeCanInScene-v0", {}),
+    "google_robot_pick_apple_multi_object": ("MultiObjectGraspSingleAppleInScene-v0", {}),
+    "google_robot_pick_sponge_multi_object": ("MultiObjectGraspSingleSpongeInScene-v0", {}),
+    "google_robot_open_top_drawer_multi_object": ("MultiObjectOpenTopDrawerCustomInScene-v0", {}),
+    "google_robot_close_bottom_drawer_multi_object": ("MultiObjectCloseBottomDrawerCustomInScene-v0", {}),
     "widowx_spoon_on_towel": ("PutSpoonOnTableClothInScene-v0", {}),
     "widowx_carrot_on_plate": ("PutCarrotOnPlateInScene-v0", {}),
     "widowx_stack_cube": ("StackGreenCubeOnYellowCubeBakedTexInScene-v0", {}),
