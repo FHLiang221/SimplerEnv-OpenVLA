@@ -111,7 +111,7 @@ def run_maniskill2_eval_single_episode(
 
     # Step the environment
     task_descriptions = []
-    while not (predicted_terminated or truncated):
+    while not (predicted_terminated or done or truncated):
         # step the model; "raw_action" is raw model action output; "action" is the processed action to be sent into maniskill env
         raw_action, action = model.step(image, task_description, obs=obs)
         predicted_actions.append(raw_action)

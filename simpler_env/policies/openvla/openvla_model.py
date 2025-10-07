@@ -215,98 +215,38 @@ class OpenVLAInference:
             unnorm_key = "bridge_orig" if unnorm_key is None else unnorm_key
             self.sticky_gripper_num_repeat = 1
         elif policy_setup == "google_robot":
-            unnorm_key = "fractal20220817_data" if unnorm_key is None else unnorm_key
-            self.sticky_gripper_num_repeat = 15
-        elif policy_setup == "jaco":
-            unnorm_key = "jaco_dataset" if unnorm_key is None else unnorm_key
-            self.sticky_gripper_num_repeat = 15
+            unnorm_key = "simpler_env_success_dataset" if unnorm_key is None else unnorm_key
         else:
             raise NotImplementedError(
                 f"Policy setup {policy_setup} not supported for octo models. The other datasets can be found in the huggingface config.json file."
             )
         self.policy_setup = policy_setup
         self.unnorm_key = unnorm_key
-        self.use_proprio = use_proprio
+        self._ckpt_path = snapshot_download(saved_model_path)
 
-        print(f"*** policy_setup: {policy_setup}, unnorm_key: {unnorm_key}, use_proprio: {use_proprio} ***")
-
-        if use_proprio:
-            # Use custom VLA loading with proprioception support
-            self._ckpt_path = snapshot_download(saved_model_path)
-            self.processor = AutoProcessor.from_pretrained(saved_model_path, trust_remote_code=True)
-
-            cfg = GenerateConfig(
-                pretrained_checkpoint=saved_model_path,
-                use_l1_regression=True,
-                use_diffusion=False,
-                use_film=False,
-                num_images_in_input=1,
-                use_proprio=True,
-                load_in_8bit=False,
-                load_in_4bit=False,
-                center_crop=True,
-                num_open_loop_steps=NUM_ACTIONS_CHUNK,
-                unnorm_key=self.unnorm_key,
-            )
-            self.vla = get_vla(cfg)
-
-            # Initialize proprioception projector
-            proprio_projector = ProprioProjector(
-                llm_dim=self.vla.llm_dim,
-                proprio_dim=PROPRIO_DIM,
-            ).to("cuda:0")
-            proprio_projector = proprio_projector.to(torch.bfloat16).to("cuda:0")
-            proprio_projector.eval()
-
-            checkpoint_path = find_checkpoint_file(self._ckpt_path, "proprio_projector")
-            state_dict = load_component_state_dict(checkpoint_path)
-            proprio_projector.load_state_dict(state_dict)
-            self.proprio_projector = proprio_projector
-
-            # Load dataset statistics
-            dataset_statistics_path = os.path.join(self._ckpt_path, "dataset_statistics.json")
-            with open(dataset_statistics_path, "r") as f:
-                norm_stats = json.load(f)
-                self.norm_stats = norm_stats
-            self.vla.norm_stats = self.norm_stats
-
-            # Check if the unnorm_key exists in the loaded stats
-            if self.unnorm_key not in self.norm_stats:
-                available_keys = list(self.norm_stats.keys())
-                print(f"WARNING: unnorm_key '{self.unnorm_key}' not found in checkpoint!")
-                print(f"Available keys in checkpoint: {available_keys}")
-                if len(available_keys) == 1:
-                    self.unnorm_key = available_keys[0]
-                    print(f"Auto-selecting the only available key: '{self.unnorm_key}'")
-                else:
-                    raise ValueError(f"unnorm_key '{self.unnorm_key}' not found. Available: {available_keys}")
-
-            # Initialize action head
-            action_head = L1RegressionActionHead(
-                input_dim=self.vla.llm_dim, hidden_dim=self.vla.llm_dim, action_dim=ACTION_DIM
-            )
-            checkpoint_path = find_checkpoint_file(self._ckpt_path, "action_head")
-            state_dict = load_component_state_dict(checkpoint_path)
-            action_head.load_state_dict(state_dict)
-            action_head = action_head.to(torch.bfloat16).to("cuda:0")
-            action_head.eval()
-            self.action_head = action_head
-
-            # Initialize action queue for action chunking
-            self.action_queue = deque(maxlen=NUM_ACTIONS_CHUNK)
-        else:
-            # Standard VLA loading without proprioception
-            self.processor = AutoProcessor.from_pretrained(saved_model_path, trust_remote_code=True)
-            self.vla = AutoModelForVision2Seq.from_pretrained(
-                saved_model_path,
-                attn_implementation="flash_attention_2",  # [Optional] Requires `flash_attn`
-                torch_dtype=torch.bfloat16,
-                low_cpu_mem_usage=True,
-                trust_remote_code=True,
-            ).cuda()
-            self.proprio_projector = None
-            self.action_head = None
-            self.action_queue = None
+        print(f"*** policy_setup: {policy_setup}, unnorm_key: {unnorm_key} ***")
+        self.processor = AutoProcessor.from_pretrained(saved_model_path, trust_remote_code=True)
+        # self.vla = AutoModelForVision2Seq.from_pretrained(
+        #     saved_model_path,
+        #     attn_implementation="flash_attention_2",  # [Optional] Requires `flash_attn`
+        #     torch_dtype=torch.bfloat16,
+        #     low_cpu_mem_usage=True,
+        #     trust_remote_code=True,
+        # ).cuda()
+        cfg = GenerateConfig(
+            pretrained_checkpoint = saved_model_path, 
+            use_l1_regression = True, 
+            use_diffusion = False, 
+            use_film = False, 
+            num_images_in_input = 1, 
+            use_proprio = True, 
+            load_in_8bit = False, 
+            load_in_4bit = False, 
+            center_crop = True, 
+            num_open_loop_steps = NUM_ACTIONS_CHUNK, 
+            unnorm_key = self.unnorm_key, 
+        )
+        self.vla = get_vla(cfg)
 
         self.image_size = image_size
         self.action_scale = action_scale
@@ -323,6 +263,47 @@ class OpenVLAInference:
         self.task_description = None
         self.num_image_history = 0
 
+        # Initialize projector and move to device
+        proprio_projector = ProprioProjector(
+            llm_dim=self.vla.llm_dim,
+            proprio_dim=PROPRIO_DIM,  # 8-dimensional proprio for LIBERO
+        ).to("cuda:0")
+        proprio_projector = proprio_projector.to(torch.bfloat16).to("cuda:0")
+        proprio_projector.eval()
+        
+        # For me self._ckpt_path is
+        # "/home/shihanzh/.cache/huggingface/hub/models--fhliang--jaco_adv_500/snapshots/11437747406ee0b2975b5247405c061bd0ea024e"
+        checkpoint_path = find_checkpoint_file(
+            self._ckpt_path, "proprio_projector"
+        )
+        state_dict = load_component_state_dict(checkpoint_path)
+        proprio_projector.load_state_dict(state_dict)
+        
+        self.proprio_projector = proprio_projector
+    
+        dataset_statistics_path = os.path.join(
+            self._ckpt_path, "dataset_statistics.json"
+        )
+        with open(dataset_statistics_path, "r") as f:
+            norm_stats = json.load(f)
+            self.norm_stats = norm_stats
+
+        self.vla.norm_stats = self.norm_stats
+
+        action_head = L1RegressionActionHead(
+            input_dim=self.vla.llm_dim, hidden_dim=self.vla.llm_dim, action_dim=ACTION_DIM
+        )
+
+        checkpoint_path = find_checkpoint_file(self._ckpt_path, "action_head")
+        state_dict = load_component_state_dict(checkpoint_path)
+        action_head.load_state_dict(state_dict)
+        action_head = action_head.to(torch.bfloat16).to("cuda:0")
+        action_head.eval()
+        
+        self.action_head = action_head
+
+        self.action_queue = deque(maxlen=8)
+
     def reset(self, task_description: str) -> None:
         self.task_description = task_description
         self.num_image_history = 0
@@ -332,17 +313,15 @@ class OpenVLAInference:
         self.sticky_gripper_action = 0.0
         self.previous_gripper_action = None
 
-        if self.use_proprio:
-            self.action_queue = deque(maxlen=NUM_ACTIONS_CHUNK)
+        self.action_queue = deque(maxlen=8)
 
     def step(
-        self, image: np.ndarray, task_description: Optional[str] = None, obs=None, *args, **kwargs
+        self, image: np.ndarray, task_description: Optional[str] = None, obs = None, *args, **kwargs
     ) -> tuple[dict[str, np.ndarray], dict[str, np.ndarray]]:
         """
         Input:
             image: np.ndarray of shape (H, W, 3), uint8
             task_description: Optional[str], task description; if different from previous task description, policy state is reset
-            obs: Optional observation dict containing proprioception data (required if use_proprio=True)
         Output:
             raw_action: dict; raw policy action output
             action: dict; processed action to be sent to the maniskill2 environment, with the following keys:
@@ -357,63 +336,97 @@ class OpenVLAInference:
 
         assert image.dtype == np.uint8
         image = self._resize_image(image)
+
         image: Image.Image = Image.fromarray(image)
 
-        if self.use_proprio:
-            # Proprioception-enabled inference with action chunking
-            if len(self.action_queue) == 0:
-                print(f"[PROPRIO] Querying policy with proprioception (action chunking: {NUM_ACTIONS_CHUNK} actions)")
-                # Build VLA prompt
-                prompt = f"In: What action should the robot take to {task_description.lower()}?\nOut:"
+        if len(self.action_queue) == 0:
+            # Collect all input images
+                # all_images = [obs["full_image"]]
+                # if cfg.num_images_in_input > 1:
+                #     all_images.extend([obs[k] for k in obs.keys() if "wrist" in k])
 
-                # Process primary image
-                inputs = self.processor(prompt, image).to("cuda:0", dtype=torch.bfloat16)
+                # # Process images
+                # all_images = prepare_images_for_vla(all_images, cfg)
 
-                # Process proprioception data
-                # Extract proprio from observation - use eef_pos (7D) + last gripper joint (1D) = 8D
-                proprio = np.concatenate([obs['agent']['eef_pos'][:-1], [obs['agent']['qpos'][-1]]])
-                print(f"[PROPRIO] Robot state shape: {proprio.shape}, values: {proprio[:3]}... (showing first 3)")
+            # Extract primary image and additional images
+            primary_image = image # all_images.pop(0)
 
-                # Normalize proprioception
-                proprio_norm_stats = self.norm_stats[self.unnorm_key]["proprio"]
-                mask = proprio_norm_stats.get("mask", np.ones_like(proprio_norm_stats["min"], dtype=bool))
-                proprio_high, proprio_low = np.array(proprio_norm_stats["max"]), np.array(proprio_norm_stats["min"])
+            # Build VLA prompt
+            prompt = f"In: What action should the robot take to {task_description.lower()}?\nOut:"
 
-                normalized_proprio = np.clip(
-                    np.where(
-                        mask,
-                        2 * (proprio - proprio_low) / (proprio_high - proprio_low + 1e-8) - 1,
-                        proprio,
-                    ),
-                    a_min=-1.0,
-                    a_max=1.0,
-                )
+            # Process primary image
+            inputs = self.processor(prompt, primary_image).to("cuda:0", dtype=torch.bfloat16)
 
-                # Custom action head for continuous actions
-                action_chunk, _ = self.vla.predict_action(
-                    **inputs,
-                    unnorm_key=self.unnorm_key,
-                    do_sample=False,
-                    proprio=normalized_proprio,
-                    proprio_projector=self.proprio_projector,
-                    action_head=self.action_head,
-                    noisy_action_projector=None,
-                    use_film=False,
-                )
+            # Process additional wrist images if any
+            # if all_images:
+            #     all_wrist_inputs = [
+            #         processor(prompt, image_wrist).to(DEVICE, dtype=torch.bfloat16)
+            #         for image_wrist in all_images
+            #     ]
+            #     # Concatenate all images
+            #     primary_pixel_values = inputs["pixel_values"]
+            #     all_wrist_pixel_values = [
+            #         wrist_inputs["pixel_values"] for wrist_inputs in all_wrist_inputs
+            #     ]
+            #     inputs["pixel_values"] = torch.cat(
+            #         [primary_pixel_values] + all_wrist_pixel_values, dim=1
+            #     )
 
-                # Add actions to queue
-                actions = [action_chunk[i] for i in range(len(action_chunk))]
-                self.action_queue.extend(actions)
-                print(f"[PROPRIO] Generated {len(actions)} actions, queued for execution")
 
-            # Get action from queue
-            raw_actions = self.action_queue.popleft()[None]
-            print(f"[PROPRIO] Using queued action ({len(self.action_queue)} remaining in queue)")
-        else:
-            # Standard VLA inference without proprioception
-            prompt = task_description
-            inputs = self.processor(prompt, image).to("cuda:0", dtype=torch.bfloat16)
-            raw_actions = self.vla.predict_action(**inputs, unnorm_key=self.unnorm_key, do_sample=False)[None]
+            # Process proprioception data if used
+            proprio = None
+            # proprio = obs["agent"] # obs["state"]
+            # proprio = np.concatenate([
+            #     obs["extra"]["tcp_pose"].ravel(),
+            #     obs["agent"]["controller"]["gripper"]["target_qpos"][:1]
+            # ], axis=0)
+            # FIXME
+            proprio = np.concatenate([obs['agent']['eef_pos'][:-1], [obs['agent']['qpos'][-1]]])
+            # proprio = obs['agent']['qpos'].copy()
+
+            proprio_norm_stats = self.norm_stats[self.unnorm_key]["proprio"]
+            
+            # normalize proprio {obs["state"] = normalize_proprio(proprio, proprio_norm_stats)}
+            mask = proprio_norm_stats.get("mask", np.ones_like(proprio_norm_stats["min"], dtype=bool))
+            proprio_high, proprio_low = np.array(proprio_norm_stats["max"]), np.array(
+                proprio_norm_stats["min"]
+            )
+            
+            normalized_proprio = np.clip(
+                np.where(
+                    mask,
+                    2 * (proprio - proprio_low) / (proprio_high - proprio_low + 1e-8) - 1,
+                    proprio,
+                ),
+                a_min=-1.0,
+                a_max=1.0,
+            )
+            obs["state"] = normalized_proprio
+            proprio = obs["state"]
+
+            # Custom action head for continuous actions
+            action, _ = self.vla.predict_action(
+                **inputs,
+                unnorm_key=self.unnorm_key, # self.unnorm_key,
+                do_sample=False,
+                proprio=proprio,
+                proprio_projector=self.proprio_projector,
+                action_head=self.action_head,
+                # below are not used
+                noisy_action_projector=None,
+                use_film=False,
+            )
+
+            actions = [action[i] for i in range(len(action))]
+            self.action_queue.extend(actions)
+
+        # Get action from queue
+        raw_actions = self.action_queue.popleft()[None]
+
+        # predict action (7-dof; un-normalize for bridgev2)
+        # inputs = self.processor(prompt, image).to("cuda:0", dtype=torch.bfloat16)
+        # raw_actions = self.vla.predict_action(**inputs, unnorm_key=self.unnorm_key, do_sample=False)[None]
+        # # print(f"*** raw actions {raw_actions} ***")
 
         raw_action = {
             "world_vector": np.array(raw_actions[0, :3]),
@@ -431,33 +444,12 @@ class OpenVLAInference:
         action["rot_axangle"] = action_rotation_axangle * self.action_scale
 
         if self.policy_setup == "google_robot":
-            current_gripper_action = raw_action["open_gripper"]
-            if self.previous_gripper_action is None:
-                relative_gripper_action = np.array([0])
-            else:
-                relative_gripper_action = self.previous_gripper_action - current_gripper_action
-            self.previous_gripper_action = current_gripper_action
-
-            if np.abs(relative_gripper_action) > 0.5 and (not self.sticky_action_is_on):
-                self.sticky_action_is_on = True
-                self.sticky_gripper_action = relative_gripper_action
-
-            if self.sticky_action_is_on:
-                self.gripper_action_repeat += 1
-                relative_gripper_action = self.sticky_gripper_action
-
-            if self.gripper_action_repeat == self.sticky_gripper_num_repeat:
-                self.sticky_action_is_on = False
-                self.gripper_action_repeat = 0
-                self.sticky_gripper_action = 0.0
-
-            action["gripper"] = relative_gripper_action
+            # Use the raw gripper action directly as it's already in the correct format
+            # The policy is trained on demonstration data that already contains the correct gripper values
+            action["gripper"] = raw_action["open_gripper"]
 
         elif self.policy_setup == "widowx_bridge":
             action["gripper"] = 2.0 * (raw_action["open_gripper"] > 0.5) - 1.0
-
-        elif self.policy_setup == "jaco":
-            action["gripper"] = raw_action["open_gripper"]
 
         action["terminate_episode"] = np.array([0.0])
 
