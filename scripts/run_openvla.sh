@@ -21,6 +21,16 @@ tasks=(
 
 ckpts=(
   fhliang/google_robot_base_20k
+  #fhliang/google_robot_Qdig_20k
+
+
+'''
+qd_coke_can: “approach the coke can, adjust your grip, gently grasp it, and then lift it carefully”
+qd_top_drawer: “could you open the top drawer, please?”
+qd_bottom_drawer: “close the drawer at the bottom, listening for the sound of it clicking shut”
+human_coke_can: “pick up the soda can”
+human_sponge: “could you grab that sponge off the table”
+'''
 )
 
 action_ensemble_temp=-0.8

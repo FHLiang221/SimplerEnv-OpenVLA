@@ -51,6 +51,11 @@ def get_args():
     parser.add_argument("--max-episode-steps", type=int, default=80)
     parser.add_argument("--rgb-overlay-path", type=str, default=None)
     parser.add_argument(
+        "--randomize-robot-pos",
+        action="store_true",
+        help="Use environment's built-in robot position randomization instead of fixed positions",
+    )
+    parser.add_argument(
         "--robot-init-x-range",
         type=float,
         nargs=3,

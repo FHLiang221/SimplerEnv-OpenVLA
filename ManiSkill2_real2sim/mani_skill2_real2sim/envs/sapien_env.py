@@ -503,6 +503,7 @@ class BaseEnv(gym.Env):
         else:
             self._episode_seed = seed
         self._episode_rng = np.random.RandomState(self._episode_seed)
+        print(f"🌱 set_episode_rng called with seed={seed}, _episode_seed={self._episode_seed}")
 
     def initialize_episode(self):
         """Initialize the episode, e.g., poses of actors and articulations, and robot configuration.

@@ -635,6 +635,8 @@ class MultiObjectOpenDrawerInSceneEnv(CustomOtherObjectsInSceneEnv): # CustomSce
         robot_init_rotzs = [-0.03, -0.02, -0.06, 0, 0, 0, 0, -0.025, -0.025]
         idx_chosen = self._episode_rng.choice(len(overlay_ids))
 
+        print(f"🎲 Randomizing robot position: seed={self._episode_seed}, idx={idx_chosen}, x={robot_init_xs[idx_chosen]:.3f}, y={robot_init_ys[idx_chosen]:.3f}")
+
         options["robot_init_options"] = {
             "init_xy": [robot_init_xs[idx_chosen], robot_init_ys[idx_chosen]],
             "init_rot_quat": (

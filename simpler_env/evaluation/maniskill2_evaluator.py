@@ -66,12 +66,14 @@ def run_maniskill2_eval_single_episode(
     )
     # __import__('ipdb').set_trace()
     # initialize environment
-    env_reset_options = {
-        "robot_init_options": {
+    env_reset_options = {}
+    # Only set robot_init_options if not using randomization
+    # When randomized, prepackaged_config environments will use their own randomization
+    if robot_init_x is not None and robot_init_y is not None:
+        env_reset_options["robot_init_options"] = {
             "init_xy": np.array([robot_init_x, robot_init_y]),
             "init_rot_quat": robot_init_quat,
         }
-    }
     if obj_init_x is not None:
         assert obj_init_y is not None
         obj_variation_mode = "xy"
@@ -84,7 +86,9 @@ def run_maniskill2_eval_single_episode(
         env_reset_options["obj_init_options"] = {
             "episode_id": obj_episode_id,
         }
-    obs, _ = env.reset(options=env_reset_options)
+    # Use episode_id as seed for robot position randomization
+    print(f"🔧 Calling env.reset with seed={obj_episode_id}")
+    obs, _ = env.reset(seed=obj_episode_id, options=env_reset_options)
     # for long-horizon environments, we check if the current subtask is the final subtask
     is_final_subtask = env.is_final_subtask()
 
@@ -167,8 +171,14 @@ def run_maniskill2_eval_single_episode(
         rgb_overlay_path_str = os.path.splitext(os.path.basename(rgb_overlay_path))[0]
     else:
         rgb_overlay_path_str = "None"
-    r, p, y = quat2euler(robot_init_quat)
-    video_path = f"{scene_name}/{control_mode}/{env_save_name}/rob_{robot_init_x}_{robot_init_y}_rot_{r:.3f}_{p:.3f}_{y:.3f}_rgb_overlay_{rgb_overlay_path_str}/{video_name}"
+
+    # Handle randomized robot positions (None values)
+    if robot_init_quat is not None:
+        r, p, y = quat2euler(robot_init_quat)
+        video_path = f"{scene_name}/{control_mode}/{env_save_name}/rob_{robot_init_x}_{robot_init_y}_rot_{r:.3f}_{p:.3f}_{y:.3f}_rgb_overlay_{rgb_overlay_path_str}/{video_name}"
+    else:
+        # When robot position is randomized, don't include it in path
+        video_path = f"{scene_name}/{control_mode}/{env_save_name}/rob_randomized_rgb_overlay_{rgb_overlay_path_str}/{video_name}"
     video_path = os.path.join(logging_dir, video_path)
     write_video(video_path, images, fps=5)
 
@@ -186,9 +196,14 @@ def maniskill2_evaluator(model, args):
     success_arr = []
 
     # run inference
-    for robot_init_x in args.robot_init_xs:
-        for robot_init_y in args.robot_init_ys:
-            for robot_init_quat in args.robot_init_quats:
+    # If randomize_robot_pos is True, use None to trigger env's built-in randomization
+    robot_xs = [None] if args.randomize_robot_pos else args.robot_init_xs
+    robot_ys = [None] if args.randomize_robot_pos else args.robot_init_ys
+    robot_quats = [None] if args.randomize_robot_pos else args.robot_init_quats
+
+    for robot_init_x in robot_xs:
+        for robot_init_y in robot_ys:
+            for robot_init_quat in robot_quats:
                 kwargs = dict(
                     model=model,
                     ckpt_path=args.ckpt_path,

@@ -27,7 +27,9 @@ do CUDA_VISIBLE_DEVICES=${gpu_id} python simpler_env/main_inference.py \
   --use-proprio \
   --robot google_robot_static \
   --control-freq 3 --sim-freq 513 --max-episode-steps 150 \
-  --obj-episode-range 0 50 \
+  --obj-variation-mode episode \
+  --obj-episode-range 0 10 \
+  --randomize-robot-pos \
   --env-name ${task_name};
 
 done
