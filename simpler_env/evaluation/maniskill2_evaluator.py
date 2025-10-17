@@ -95,10 +95,17 @@ def run_maniskill2_eval_single_episode(
     # Obtain language instruction
     if instruction is not None:
         task_description = instruction
+        print(f"\n{'='*60}")
+        print(f"🎯 USING CUSTOM INSTRUCTION:")
+        print(f"   \"{task_description}\"")
+        print(f"{'='*60}\n")
     else:
         # get default language instruction
         task_description = env.get_language_instruction()
-    print(task_description)
+        print(f"\n{'='*60}")
+        print(f"📋 Using default instruction:")
+        print(f"   \"{task_description}\"")
+        print(f"{'='*60}\n")
 
     # Initialize logging
     image = get_image_from_maniskill2_obs_dict(env, obs, camera_name=obs_camera_name)
@@ -223,6 +230,7 @@ def maniskill2_evaluator(model, args):
                     additional_env_save_tags=args.additional_env_save_tags,
                     obs_camera_name=args.obs_camera_name,
                     logging_dir=args.logging_dir,
+                    instruction=args.instruction,
                 )
                 if args.obj_variation_mode == "xy":
                     for obj_init_x in args.obj_init_xs:

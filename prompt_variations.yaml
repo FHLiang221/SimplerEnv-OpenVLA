@@ -1,0 +1,24 @@
+# Prompt Variations for Robustness Testing
+# Each task has multiple prompt variations to test if the model generalizes beyond exact training prompts
+
+# Multi-object pick tasks
+google_robot_pick_coke_can_multi_object:
+  - "approach the coke can, adjust your grip, gently grasp it, and then lift it carefully"
+  - "pick up the soda can"
+
+google_robot_pick_apple_multi_object:
+  - "pick up the apple"
+
+google_robot_pick_sponge_multi_object:
+  -  "could you grab that sponge off the table"
+
+# Drawer tasks
+google_robot_open_top_drawer_multi_object:
+  - "could you open the top drawer, please?"
+
+google_robot_close_bottom_drawer_multi_object:
+  - "close the drawer at the bottom, listening for the sound of it clicking shut"
+
+# Additional variations for custom prompts
+# Format: task_name -> list of prompt variations
+# You can add more tasks and variations as needed
