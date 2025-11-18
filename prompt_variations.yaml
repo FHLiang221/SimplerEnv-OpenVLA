@@ -3,21 +3,30 @@
 
 # Multi-object pick tasks
 google_robot_pick_coke_can_multi_object:
-  - "approach the coke can, adjust your grip, gently grasp it, and then lift it carefully"
-  - "pick up the soda can"
+  - gently nab that soda can
+  - approach the coke can, adjust your grip, gently grasp it, and then lift it carefully
+  - pick coke can
 
 google_robot_pick_apple_multi_object:
-  - "pick up the apple"
+  - i'm not quite sure who you're yakking to, but hey, can you grab that apple for me?
+  - i'm not sure who you're chatting with, but hey, can you grab that apple for me?
+  - pick apple
 
 google_robot_pick_sponge_multi_object:
-  -  "could you grab that sponge off the table"
+  - carefully grasp the sponge with the robotic hand, ensuring a gentle touch to maintain its shape, and then lift it smoothly off the table
+  - grasp and elevate the sponge object from its current resting place on the table surface
+  - pick sponge
 
 # Drawer tasks
 google_robot_open_top_drawer_multi_object:
-  - "could you open the top drawer, please?"
+  - could you open the top drawer, please?
+  - open the top drawer gently
+  - open top drawer
 
 google_robot_close_bottom_drawer_multi_object:
-  - "close the drawer at the bottom, listening for the sound of it clicking shut"
+  - close the drawer at the bottom, listening for the sound of it clicking shut
+  - could you please close the bottom drawer for me?
+  - close bottom drawer
 
 # Additional variations for custom prompts
 # Format: task_name -> list of prompt variations

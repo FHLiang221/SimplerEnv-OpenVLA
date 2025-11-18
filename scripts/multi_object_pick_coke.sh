@@ -79,7 +79,7 @@ for prompt_idx, prompt in enumerate(prompts):
         '--sim-freq', '513',
         '--max-episode-steps', '120',
         '--obj-variation-mode', 'episode',
-        '--obj-episode-range', '0', '10',
+        '--obj-episode-range', '0', '50',
         '--randomize-robot-pos',
         '--env-name', task_name,
     ]
@@ -116,7 +116,7 @@ else
     --robot google_robot_static \
     --control-freq 3 --sim-freq 513 --max-episode-steps 120 \
     --obj-variation-mode episode \
-    --obj-episode-range 0 10 \
+    --obj-episode-range 0 50 \
     --randomize-robot-pos \
     --env-name ${task_name};
   done

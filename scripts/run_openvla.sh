@@ -33,8 +33,10 @@ tasks=(
 )
 
 ckpts=(
+  fhliang/google_robot_ERT_20k
   #fhliang/google_robot_base_20k
-  fhliang/google_robot_Qdig_20k
+  #fhliang/google_robot_Qdig_20k
+  
   # Notes on custom prompts (for reference):
   # qd_coke_can: "approach the coke can, adjust your grip, gently grasp it, and then lift it carefully"
   # qd_top_drawer: "could you open the top drawer, please?"
